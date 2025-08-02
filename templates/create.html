@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Crea un Nuovo Server</h2>
+<form method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label>Nome Server</label>
+    <input type="text" name="name" class="form-control" required />
+  </div>
+  <div class="mb-3">
+    <label>RAM (GB)</label>
+    <select name="ram" class="form-select">
+      <option>2</option>
+      <option>4</option>
+      <option>6</option>
+      <option>8</option>
+      <option>12</option>
+      <option>16</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Porta</label>
+    <input type="number" name="port" value="25565" class="form-control" required />
+  </div>
+  <div class="form-check mb-3">
+    <input type="checkbox" name="cracked" class="form-check-input" id="cracked" />
+    <label class="form-check-label" for="cracked">Minecraft craccato</label>
+  </div>
+  <div class="mb-3">
+    <label>File JAR</label>
+    <input type="file" name="jar_file" class="form-control" required />
+  </div>
+  <a href="https://jars.vexyhost.com/" target="_blank" class="text-info">→ Dove scaricare il JAR?</a>
+  <br><br>
+  <button type="submit" class="btn btn-success">Crea Server</button>
+</form>
+<a href="{{ url_for('show_my_servers') }}" class="btn btn-secondary mt-3">Torna ai server</a>
+{% endblock %}

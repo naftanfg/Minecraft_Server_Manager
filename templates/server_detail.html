@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Server: {{ server }}</h2>
+<p><strong>Indirizzo:</strong> 
+  <span id="address" class="text-info" style="cursor: pointer;">localhost:{{ metadata.port }}</span>
+</p>
+
+<div class="btn-group mb-3">
+  <button id="start-btn" class="btn btn-success">▶️ Avvia</button>
+  <button id="stop-btn" class="btn btn-danger">⏹️ Stop</button>
+  <button id="restart-btn" class="btn btn-warning">🔁 Riavvia</button>
+</div>
+
+<div>
+  <h5>Console</h5>
+  <textarea id="console" class="form-control bg-black text-light" rows="10" readonly></textarea>
+</div>
+
+<div class="mt-3">
+  <div class="input-group">
+    <input type="text" id="command-input" class="form-control" placeholder="Comando..." />
+    <button id="send-btn" class="btn btn-primary">Invia</button>
+  </div>
+</div>
+
+<script>
+  const serverName = "{{ server }}";
+  const address = "localhost:{{ metadata.port }}";
+
+  // Copia indirizzo
+  document.getElementById("address").onclick = () => {
+    navigator.clipboard.writeText(address);
+    alert("Indirizzo copiato: " + address);
+  };
+
+  // Pulsanti
+  document.getElementById("start-btn").onclick = () => axios.post(`/server/${serverName}/start`).then(updateStatus);
+  document.getElementById("stop-btn").onclick = () => axios.post(`/server/${serverName}/stop`).then(updateStatus);
+  document.getElementById("restart-btn").onclick = () => axios.post(`/server/${serverName}/restart`).then(updateStatus);
+  document.getElementById("send-btn").onclick = () => {
+    const cmd = document.getElementById("command-input").value;
+    if (cmd) {
+      axios.post(`/server/${serverName}/command`, { command: cmd });
+      document.getElementById("command-input").value = "";
+    }
+  };
+
+  function updateConsole() {
+    axios.get(`/server/${serverName}/console`).then(res => {
+      const console = document.getElementById("console");
+      console.value = res.data.lines.join("");
+      console.scrollTop = console.scrollHeight;
+    });
+  }
+
+  function updateStatus() {
+    setTimeout(updateConsole, 1000);
+  }
+
+  setInterval(updateConsole, 2000);
+  updateConsole();
+</script>
+{% endblock %}

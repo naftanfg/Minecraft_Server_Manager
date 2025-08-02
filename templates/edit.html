@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Modifica Server: {{ server }}</h2>
+<form method="POST">
+  <div class="mb-3">
+    <label>Nuovo Nome</label>
+    <input type="text" name="name" value="{{ metadata.name }}" class="form-control" required />
+  </div>
+  <div class="mb-3">
+    <label>RAM (GB)</label>
+    <select name="ram" class="form-select">
+      {% for ram in ['1','2','4','6','8','12','16'] %}
+        <option value="{{ ram }}" {% if ram == metadata.ram %}selected{% endif %}>{{ ram }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Porta</label>
+    <input type="number" name="port" value="{{ metadata.port }}" class="form-control" required />
+  </div>
+  <div class="form-check mb-3">
+    <input type="checkbox" name="cracked" class="form-check-input" id="cracked" {% if metadata.cracked %}checked{% endif %} />
+    <label class="form-check-label" for="cracked">Minecraft craccato</label>
+  </div>
+  <div class="mb-3">
+    <label>MOTD</label>
+    <input type="text" name="motd" value="{{ metadata.motd }}" class="form-control" />
+  </div>
+  <a href="https://minecraft.tools/en/motd.php" target="_blank" class="text-info">Vuoi un MOTD figo? Clicca qui</a>
+  <br><br>
+  <button type="submit" class="btn btn-warning">Salva Modifiche</button>
+</form>
+<a href="{{ url_for('show_my_servers') }}" class="btn btn-secondary mt-2">Annulla</a>
+{% endblock %}

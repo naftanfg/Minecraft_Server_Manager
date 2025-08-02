@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>I Miei Server</h2>
+<a href="{{ url_for('create_server') }}" class="btn btn-primary mb-3">Crea Server</a>
+<div>
+  {% if servers %}
+    {% for server in servers %}
+      <div class="card mb-2 bg-secondary">
+        <div class="card-body">
+          <h5>{{ server }}</h5>
+          <div>
+            <a href="{{ url_for('view_server', name=server) }}" class="btn btn-sm btn-info">Gestisci</a>
+            <a href="{{ url_for('edit_server', name=server) }}" class="btn btn-sm btn-warning">Modifica</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Nessun server creato.</p>
+  {% endif %}
+</div>
+{% endblock %}
